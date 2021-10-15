@@ -8,7 +8,10 @@ use crate::{
     error::SwapError,
 };
 
-use solana_program::program_error::ProgramError;
+use solana_program::{
+    program_error::ProgramError,
+    msg
+};
 
 #[cfg(feature = "production")]
 use std::env;
@@ -44,6 +47,8 @@ impl<'a> SwapConstraints<'a> {
 
     /// Checks that the provided curve is valid for the given constraints
     pub fn validate_fees(&self, fees: &Fees) -> Result<(), ProgramError> {
+        msg!("self.fees.trade_fee_numerator: {}", self.fees.trade_fee_numerator);
+        msg!("self.fees.owner_withdraw_fee_numerator: {}", self.fees.owner_withdraw_fee_numerator);
         if fees.trade_fee_numerator >= self.fees.trade_fee_numerator
             && fees.trade_fee_denominator == self.fees.trade_fee_denominator
             && fees.owner_trade_fee_numerator >= self.fees.owner_trade_fee_numerator
@@ -55,6 +60,7 @@ impl<'a> SwapConstraints<'a> {
         {
             Ok(())
         } else {
+            msg!("validate_fees");
             Err(SwapError::InvalidFee.into())
         }
     }

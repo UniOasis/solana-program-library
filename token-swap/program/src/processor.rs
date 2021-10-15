@@ -289,6 +289,7 @@ impl Processor {
                 return Err(SwapError::InvalidOwner.into());
             }
             swap_constraints.validate_curve(&swap_curve)?;
+            msg!("swap_constraints: {:?}", &fees);
             swap_constraints.validate_fees(&fees)?;
         }
         fees.validate()?;
@@ -995,7 +996,8 @@ impl Processor {
         let instruction = SwapInstruction::unpack(input)?;
         match instruction {
             SwapInstruction::Initialize(Initialize { fees, swap_curve }) => {
-                msg!("Instruction: Init");
+                // msg!("Instruction: Init");
+                msg!("Instruction: Init: {:?}", fees);
                 Self::process_initialize(program_id, fees, swap_curve, accounts, swap_constraints)
             }
             SwapInstruction::Swap(Swap {

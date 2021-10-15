@@ -5,6 +5,7 @@ use arrayref::{array_mut_ref, array_ref, array_refs, mut_array_refs};
 use solana_program::{
     program_error::ProgramError,
     program_pack::{IsInitialized, Pack, Sealed},
+    msg
 };
 use std::convert::TryFrom;
 
@@ -65,6 +66,7 @@ fn validate_fraction(numerator: u64, denominator: u64) -> Result<(), SwapError> 
     if denominator == 0 && numerator == 0 {
         Ok(())
     } else if numerator >= denominator {
+        msg!("InvalidFee");
         Err(SwapError::InvalidFee)
     } else {
         Ok(())
